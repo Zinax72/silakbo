@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@import "@fontsource/forum";
+
+@font-face {
+  font-family: "Perandory";
+  src: url("./assets/fonts/perandory-semi-condensed.otf") format("opentype");
+}
+
+@theme {
+    --font-body: 'Forum', serif;
+    --font-heading: 'Perandory', serif;
+}
+
+@layer base {
+  body {
+    @apply font-body;
+  }
+}
