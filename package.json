@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@fontsource/forum": "^5.3.0",
+    "@hookform/resolvers": "^5.9.1",
     "@tailwindcss/vite": "^4.3.3",
     "firebase": "^13.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-helmet-async": "^3.0.0",
+    "react-hook-form": "^7.90.0",
     "react-router-dom": "^7.18.4",
     "react-toastify": "^11.1.0",
     "tailwindcss": "^4.3.3",
