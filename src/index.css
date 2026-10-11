@@ -9,6 +9,15 @@
 @theme {
     --font-body: 'Forum', serif;
     --font-heading: 'Perandory', serif;
+
+    --color-base: #1A0101;      /* page background */
+    --color-maroon: #2B0202;    /* text, navbar gradient start */
+    --color-maroon-deep: #170101; /* navbar gradient end */
+    --color-glow: #A01414;      /* radial gradient glow */
+    --color-cream: #F1E8DC;     /* card background */
+    --color-gold: #D4B26A;      /* Sign In button */
+    --color-input: #FFF8F0;     /* input background */
+
 }
 
 @layer base {
