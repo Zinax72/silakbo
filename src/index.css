@@ -17,8 +17,9 @@
     --color-cream: #F1E8DC;     /* card background */
     --color-gold: #D4B26A;      /* Sign In button */
     --color-input: #FFF8F0;     /* input background */
-
-}
+    --color-gold: #D4B26A;      /* Sign In button */
+    --color-nearblack: #0D0000;
+  }
 
 @layer base {
   body {

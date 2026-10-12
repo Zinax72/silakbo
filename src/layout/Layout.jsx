@@ -9,7 +9,10 @@ const Layout = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <Outlet />
-      <ToastContainer />
+      <ToastContainer
+      autoClose={200}
+      hideProgressBar
+      position="top-center" />
     </div>
   )
 }

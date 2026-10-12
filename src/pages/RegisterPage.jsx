@@ -1,13 +1,18 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 import { registerSchema } from '../schemas/AuthSchemas';
 import { useForm } from 'react-hook-form';
-import { register as registerUser } from '../services/AuthServices';
-import { googleSignIn } from '../services/AuthServices';
+import { register as registerUser, googleSignIn } from '../services/AuthServices';
+import { Helmet } from 'react-helmet-async';
+import { useAuth } from '../context/AuthContext';
 import logo from '../assets/Silakbo.svg';
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  if (user) return <Navigate to="/" />;
+
   const { register,
     handleSubmit,
     reset,
@@ -22,6 +27,7 @@ const onSubmit = async (data) => {
     await registerUser(data.email, data.password);
     toast.success("Account created successfully!");
     reset();
+    navigate("/"); // Redirect to the home page after successful register
   } catch (error) {
     toast.error("Email is already in use.");
   }
@@ -31,6 +37,7 @@ const handleGoogle = async () => {
   try {
     await googleSignIn();
     toast.success("Signed in with Google successfully!");
+    navigate("/"); // Redirect to the home page after successful Google sign-in
   } catch (error) {
     toast.error("Google sign-in failed. Please try again.");
   }
@@ -39,6 +46,9 @@ const handleGoogle = async () => {
 
   return (
     <div className="flex-1 flex justify-center items-center bg-base bg-radial from-glow/70 to-glow/0">
+        <Helmet>
+          <title>Register - Silakbo</title>  
+        </Helmet>          
         <div className="w-110 bg-cream rounded-3xl px-10 py-8 shadow-2xl shadow-black/60 text-center">
           <img src={logo} alt="Logo" className="mx-auto mb-2 w-20 h-20" />
           <h1 className="font-heading text-3xl mb-4 text-maroon tracking-[0.12em]">Create Account</h1>
