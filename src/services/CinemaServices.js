@@ -8,8 +8,6 @@ import {
   query,
   orderByChild,
   equalTo,
-  limitToFirst,
-  endAt,
 } from "firebase/database";
 import { db } from "../lib/firebase";
 
@@ -24,7 +22,7 @@ const isBookingEmpty = (booking) => {
 
 
 // check if seat is taken
-const isSeatTaken = async (movieID, date, time, seats) => {
+const isSeatTaken = async (movieID, date, time, seats, excludeId = null) => {
   const seatQuery = query(
     bookingsReference,
     orderByChild("movieID"),
@@ -35,6 +33,7 @@ const isSeatTaken = async (movieID, date, time, seats) => {
   let taken = false
 
   snapshot.forEach((snap) => {
+    if (snap.key === excludeId) return;
     const b = snap.val();
     if (b.date  === date && b.time === time && b.seats.some((s) => seats.includes(s))) {
       taken = true
@@ -97,3 +96,49 @@ export const getBookings = (uid, callback) => {
 
   return unsubscribe
 };
+
+export const deleteBooking = async (id) => {
+  try {
+    const deleteReference = ref(db, `bookings/${id}`);
+    await remove(deleteReference);
+    return {
+      success: true,
+      message: "Deleted successfully."
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: "Deletion failed. Please try again."
+    }
+  }
+}
+
+export const updateBooking = async (id, movieID, date, time, seats, totalPrice) => {
+  try {
+    if (seats.length === 0) {
+      return {
+        success: false,
+        message: "Please select at least one seat."
+      }
+    }
+
+    if (await isSeatTaken(movieID, date, time, seats, id)) {
+      return {
+        success: false,
+        message: "Seat taken."
+      }
+    }
+
+    await update(ref(db, `bookings/${id}`), {date, time, seats, totalPrice})
+
+    return {
+      success: true,
+      message: "Updated successfully."
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: "Update failed. Please try again."
+    }
+  }
+}
