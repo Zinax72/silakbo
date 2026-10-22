@@ -1,5 +1,5 @@
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   addBooking,
@@ -8,6 +8,10 @@ import {
   updateBooking,
 } from "../services/CinemaServices";
 import { getMovies } from "../services/MovieServices";
+import NowShowing from "./NowShowing";
+import ComingSoon from "./ComingSoon";
+import silakboLogo from "../assets/Silakbo.svg";
+import "./HomePage.css";
 
 const HomePage = () => {
   const { user } = useAuth();
@@ -17,12 +21,12 @@ const HomePage = () => {
 
   useEffect(() => {
     getMovies()
-      .then(setMovies)
+      .then((data) => setMovies(data))
       .catch(() => toast.error("Could not load movies."))
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
+   useEffect(() => {
     if (!user) return;
     const unsubscribe = getBookings(user.uid, setBookings);
     return () => unsubscribe();
@@ -52,32 +56,55 @@ const HomePage = () => {
   };
 
   return (
-    <div>
-      <h1>Now Showing</h1>
+    <div className="silakbo-landing">
+      {/* Top Navigation */}
+      <nav className="silakbo-nav">
+      </nav>
 
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        movies
-          .filter((m) => m.status === "now_showing")
-          .map((m) => (
-            <div key={m.id}>
-              <img src={m.poster} alt={m.title} />
-              <h2>{m.title}</h2>
-              <p>{m.genre} | {m.duration}</p>
+      {/* Hero Banner */}
+      <section className="hero-section" id="home">
+        <div className="film-strip-border top-strip"></div>
+        <div className="hero-content">
+          <div className="hero-text">
+            <h1>WHERE DREAMS IGNITE</h1>
+            <p>
+              Pick a film, choose your seats, and walk in with your ticket
+              ready. Every screening at Silakbo Cinemas starts here.
+            </p>
+            <div className="hero-actions">
+              <button className="btn-primary">Buy tickets</button>
+              <button className="btn-secondary">See showtimes</button>
             </div>
-          ))
-      )}
-      <h1>Add</h1>
-      <button onClick={testAdd}>Test add</button>
-
-      {bookings.map((b) => (
-        <div key={b.id}>
-          {b.movieID} | {b.date} | {b.time} | {b.seats.join(", ")} | ₱{b.totalPrice}
-          <button onClick={() => handleUpdate(b)}>Change seats</button>
-          <button onClick={() => handleDelete(b.id)}>Cancel</button>
+          </div>
+          <div className="hero-logo-large">
+            <img src={silakboLogo} alt="Silakbo Cinemas" className="logo-img-hero" />
+          </div>
         </div>
-      ))}
+        <div className="film-strip-border bottom-strip"></div>
+      </section>
+
+      {/* Main Movie Content */}
+      <main className="content-container">
+        <NowShowing movies={movies} loading={loading} />
+        <ComingSoon movies={movies} loading={loading} />
+      </main>
+
+      {/* Footer */}
+      <footer className="silakbo-footer">
+        <div className="footer-left">
+          <div className="footer-logo">
+            <img src={silakboLogo} alt="Silakbo Cinemas" className="logo-img-footer" />
+            <div className="footer-brand">
+              <h2>WHERE DREAMS IGNITE</h2>
+            </div>
+          </div>
+        </div>
+        <div className="footer-links">
+          <a href="#home">Home</a>
+          <a href="#now-showing">Now showing</a>
+          <a href="#coming-soon">Coming soon</a>
+        </div>
+      </footer>
     </div>
   );
 };
