@@ -1,0 +1,39 @@
+.section-block {
+  width: 100%;
+  padding: 0 2.2rem;
+  box-sizing: border-box;
+}
+
+.section-block .movie-card {
+  justify-content: flex-end;
+}
+
+.date-pill {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.25rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  margin-bottom: 0.7rem;
+  color: var(--text-light);
+}
+
+.movie-genre {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.card-gradient-slate {
+  background: linear-gradient(180deg, #4A5A75 0%, #05070B 100%);
+}
+
+.card-gradient-purple {
+  background: linear-gradient(180deg, #7A3A8A 0%, #080208 100%);
+}
+
+.card-gradient-darkred {
+  background: linear-gradient(180deg, #7A1A1A 0%, #050101 100%);
+}

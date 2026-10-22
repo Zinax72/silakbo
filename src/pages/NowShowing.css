@@ -1,0 +1,181 @@
+:root {
+  --gold-accent: #D4AF37;
+  --text-light: #F7EFE9;
+  --text-muted: #BFAEA4;
+  --card-radius: 20px;
+}
+
+/* Full-width container (the old 500px max-width forced the cards to shrink) */
+.content-container,
+.now-showing-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 2.2rem;
+  box-sizing: border-box;
+}
+
+.now-showing-container {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.section-block {
+  margin-top: 6rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0;
+  color: var(--text-light);
+}
+
+.view-all-link {
+  color: var(--gold-accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.filter-pills {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.pill-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-light);
+  padding: 0.5rem 1.4rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.pill-btn.active {
+  background: #FAF4EB;
+  color: #0B0303;
+  border-color: #FAF4EB;
+}
+
+/* 3-column grid; last row stays left-aligned automatically */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.15rem;
+  width: 100%;
+}
+
+.movie-card {
+  width: 100%;
+  aspect-ratio: 2 / 3;       /* min-height removed so the ratio actually applies */
+  border-radius: var(--card-radius);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.poster-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.rating-badge,
+.card-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+.rating-badge {
+  align-self: flex-end;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  padding: 0.3rem 0.7rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.rating-badge .star {
+  color: var(--gold-accent);
+  font-size: 0.95rem;
+  margin-right: 0.1rem;
+}
+
+/* Leaves the empty space under the duration, as in the screenshot */
+.card-overlay {
+  padding-bottom: 2.75rem;
+}
+
+.genre-pill {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.25rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  margin-bottom: 0.7rem;
+  color: var(--text-light);
+}
+
+.movie-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  margin: 0 0 0.3rem 0;
+  font-weight: 400;
+  color: var(--text-light);
+}
+
+.movie-duration {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Gradient Background Themes */
+.card-gradient-red {
+  background: linear-gradient(180deg, #7A1414 0%, #050101 100%);
+}
+
+.card-gradient-gold {
+  background: linear-gradient(180deg, #5C3F18 0%, #060402 100%);
+}
+
+.card-gradient-teal {
+  background: linear-gradient(180deg, #1B646C 0%, #010505 100%);
+}
+
+.card-gradient-blue {
+  background: linear-gradient(180deg, #223A7A 0%, #010306 100%);
+}
+
+.card-gradient-maroon {
+  background: linear-gradient(180deg, #6A0505 0%, #010000 100%);
+}
+
+/* Only drop columns on genuinely small screens (was 900px, which broke 3 columns at tablet width) */
+@media (max-width: 560px) {
+  .movie-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
