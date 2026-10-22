@@ -1,11 +1,37 @@
-import React from 'react'
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { getMovies } from "../services/MovieServices";
 
 const ComingSoon = () => {
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getMovies()
+      .then(setMovies)
+      .catch(() => toast.error("Could not load movies."))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <div>
-      
-    </div>
-  )
-}
+      <h1>Coming Soon</h1>
 
-export default ComingSoon
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        movies
+          .filter((m) => m.status === "coming_soon")
+          .map((m) => (
+            <div key={m.id}>
+              <img src={m.poster} alt={m.title} />
+              <h2>{m.title}</h2>
+              <p>{m.genre} | {m.duration}</p>
+            </div>
+          ))
+      )}
+    </div>
+  );
+};
+
+export default ComingSoon;

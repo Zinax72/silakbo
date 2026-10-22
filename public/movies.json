@@ -11,5 +11,31 @@
     "price": 365,
     "cinema": "Main branch",
     "showtimes": ["1:00 PM", "4:30 PM", "8:00 PM"]
+  },
+  {
+    "id": "2",
+    "title": "Rosario",
+    "genre": "Drama",
+    "duration": "1h 55m",
+    "rating": "PG-13",
+    "synopsis": "A short description of the movie.",
+    "poster": "/posters/rosario.jpg",
+    "status": "coming_soon",
+    "price": 365,
+    "cinema": "Main branch",
+    "showtimes": ["1:00 PM", "4:30 PM", "8:00 PM"]
+  },
+  {
+    "id": "3",
+    "title": "Rosario",
+    "genre": "Drama",
+    "duration": "1h 55m",
+    "rating": "PG-13",
+    "synopsis": "A short description of the movie.",
+    "poster": "/posters/rosario.jpg",
+    "status": "now_showing",
+    "price": 365,
+    "cinema": "Main branch",
+    "showtimes": ["1:00 PM", "4:30 PM", "8:00 PM"]
   }
 ]
