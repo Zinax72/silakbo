@@ -7,7 +7,9 @@ import {
   deleteBooking,
   updateBooking,
 } from "../services/CinemaServices";
-import { getMovies } from "../services/MovieServices";
+import { getNowShowing } from "../services/MovieServices";
+import { Link } from "react-router-dom";
+import { getMovieById } from "../services/MovieServices";
 
 const HomePage = () => {
   const { user } = useAuth();
@@ -16,10 +18,18 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getMovies()
-      .then(setMovies)
-      .catch(() => toast.error("Could not load movies."))
-      .finally(() => setLoading(false));
+    const loadMovies = async () => {
+      try {
+        const data = await getNowShowing();
+        setMovies(data);
+        getMovieById(1400940).then(console.log);
+      } catch (error) {
+        toast.error("Could not load movies.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadMovies();
   }, []);
 
   useEffect(() => {
@@ -58,15 +68,15 @@ const HomePage = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        movies
-          .filter((m) => m.status === "now_showing")
-          .map((m) => (
-            <div key={m.id}>
-              <img src={m.poster} alt={m.title} />
+        movies.map((m) => (
+          <div key={m.id}>
+            <Link to={`/movie/${m.id}`}>
+              <img src={`https://image.tmdb.org/t/p/w500${m.poster_path}`} alt={m.title} />
               <h2>{m.title}</h2>
-              <p>{m.genre} | {m.duration}</p>
-            </div>
-          ))
+              <p>{m.release_date}</p>
+            </Link>
+          </div>
+        ))
       )}
       <h1>Add</h1>
       <button onClick={testAdd}>Test add</button>

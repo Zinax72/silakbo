@@ -1,34 +1,42 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { getMovies } from "../services/MovieServices";
+import { getComingSoon } from "../services/MovieServices";
+import { Link } from "react-router-dom";
 
 const ComingSoon = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getMovies()
-      .then(setMovies)
-      .catch(() => toast.error("Could not load movies."))
-      .finally(() => setLoading(false));
-  }, []);
-
+      const loadMovies = async () => {
+        try {
+          const data = await getComingSoon();
+          setMovies(data);
+        } catch (error) {
+          toast.error("Could not load movies.");
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      loadMovies();
+    }, []);
   return (
     <div>
       <h1>Coming Soon</h1>
-
+      
       {loading ? (
         <p>Loading...</p>
       ) : (
-        movies
-          .filter((m) => m.status === "coming_soon")
-          .map((m) => (
-            <div key={m.id}>
-              <img src={m.poster} alt={m.title} />
+        movies.map((m) => (
+          <div key={m.id}>
+            <Link to={`/movie/${m.id}`}>
+              <img src={`https://image.tmdb.org/t/p/w500${m.poster_path}`} alt={m.title} />
               <h2>{m.title}</h2>
-              <p>{m.genre} | {m.duration}</p>
-            </div>
-          ))
+              <p>{m.release_date}</p>
+            </Link>
+          </div>
+        ))
       )}
     </div>
   );

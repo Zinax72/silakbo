@@ -13,21 +13,19 @@ import { db } from "../lib/firebase";
 
 const bookingsReference = ref(db, "bookings");
 
-
 // check if booking is empty
 const isBookingEmpty = (booking) => {
-    const { uid, movieID, date, time, seats, totalPrice, paymentMethod } = booking;
-    return  !uid || !movieID || !date || !time || seats.length === 0 || !totalPrice || !paymentMethod;
+    const { uid, movieID, cinema, date, time, seats, totalPrice, paymentMethod } = booking;
+    return  !uid || !movieID || !cinema || !date || !time || seats.length === 0 || !totalPrice || !paymentMethod;
 }
 
 
 // check if seat is taken
-const isSeatTaken = async (movieID, date, time, seats, excludeId = null) => {
+const isSeatTaken = async (movieID, cinema, date, time, seats, excludeId = null) => {
   const seatQuery = query(
     bookingsReference,
     orderByChild("movieID"),
-    equalTo(movieID)
-  );
+    equalTo(movieID));
 
   const snapshot = await get(seatQuery);
   let taken = false
@@ -35,12 +33,47 @@ const isSeatTaken = async (movieID, date, time, seats, excludeId = null) => {
   snapshot.forEach((snap) => {
     if (snap.key === excludeId) return;
     const b = snap.val();
-    if (b.date  === date && b.time === time && b.seats.some((s) => seats.includes(s))) {
+    if (b.cinema === cinema && b.date  === date && b.time === time && b.seats.some((s) => seats.includes(s))) {
       taken = true
     }
   });
 
   return taken;
+}
+
+export const getTakenSeats = async (movieID, cinema, date, time, excludeId = null) => {
+  const takenQuery = query(
+    bookingsReference, 
+    orderByChild("movieID"), 
+    equalTo(movieID));
+
+  const snapshot = await get(takenQuery);
+  const takenSeats = []
+  
+  snapshot.forEach((snap) => {
+    if (snap.key === excludeId) return;
+    const b = snap.val();
+    if (b.cinema === cinema && b.date === date && b.time === time) {
+      takenSeats.push(...b.seats)
+    }
+  })
+
+  return takenSeats;
+}
+
+// unique reference code
+const generateRefCode = async () => {
+  while (true) {
+    const code = "SK-" + Math.random().toString(36).slice(2, 7).toUpperCase();
+
+    const refQuery = query(
+      bookingsReference, 
+      orderByChild("ref"),
+      equalTo(code));
+    const snapshot = await get(refQuery);
+
+    if(!snapshot.exists()) return code;
+  }
 }
 
 // add booking
@@ -53,18 +86,21 @@ export const addBooking = async (booking) => {
       };
     }
 
-    const { movieID, date, time, seats } = booking;
-    if (await isSeatTaken(movieID, date, time, seats)) {
+    const { movieID, cinema, date, time, seats } = booking;
+    if (await isSeatTaken(movieID, cinema, date, time, seats)) {
       return {
         success: false,
         message: "Seat already taken."
       }
     } 
 
-    await push(bookingsReference, booking);
+    const refCode = await generateRefCode();
+    await push(bookingsReference, { ...booking, ref: refCode });
+
     return {
       success: true,
-      message: "Booking Successful"
+      message: "Booking Successful",
+      data: refCode,
     }
   } catch (error) {
     return {
@@ -97,6 +133,36 @@ export const getBookings = (uid, callback) => {
   return unsubscribe
 };
 
+export const updateBooking = async (id, movieID, cinema, date, time, seats, totalPrice) => {
+  try {
+    if (seats.length === 0) {
+      return {
+        success: false,
+        message: "Please select at least one seat."
+      }
+    }
+
+    if (await isSeatTaken(movieID, cinema, date, time, seats, id)) {
+      return {
+        success: false,
+        message: "Seat taken."
+      }
+    }
+
+    await update(ref(db, `bookings/${id}`), {date, cinema, time, seats, totalPrice})
+
+    return {
+      success: true,
+      message: "Updated successfully."
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: "Update failed. Please try again."
+    }
+  }
+}
+
 export const deleteBooking = async (id) => {
   try {
     const deleteReference = ref(db, `bookings/${id}`);
@@ -109,36 +175,6 @@ export const deleteBooking = async (id) => {
     return {
       success: false,
       message: "Deletion failed. Please try again."
-    }
-  }
-}
-
-export const updateBooking = async (id, movieID, date, time, seats, totalPrice) => {
-  try {
-    if (seats.length === 0) {
-      return {
-        success: false,
-        message: "Please select at least one seat."
-      }
-    }
-
-    if (await isSeatTaken(movieID, date, time, seats, id)) {
-      return {
-        success: false,
-        message: "Seat taken."
-      }
-    }
-
-    await update(ref(db, `bookings/${id}`), {date, time, seats, totalPrice})
-
-    return {
-      success: true,
-      message: "Updated successfully."
-    }
-  } catch (error) {
-    return {
-      success: false,
-      message: "Update failed. Please try again."
     }
   }
 }
