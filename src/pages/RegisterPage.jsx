@@ -1,4 +1,4 @@
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useLocation} from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 import { registerSchema } from '../schemas/AuthSchemas';
@@ -10,8 +10,8 @@ import logo from '../assets/Silakbo.svg';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
-  if (user) return <Navigate to="/" />;
 
   const { register,
     handleSubmit,
@@ -19,15 +19,19 @@ const RegisterPage = () => {
     formState: { errors, isSubmitting},
   } = useForm({
     resolver: zodResolver(registerSchema),
-    defaultValues: { email: "", password: "", confirmPassword: "" },
+    defaultValues: { fullName: "", email: "", password: "", confirmPassword: "" },
   });
+
+  if (user) return <Navigate to="/" />;
+
+  const from = location.state?.from?.pathname || "/";
 
 const onSubmit = async (data) => {
   try {
-    await registerUser(data.email, data.password);
+    await registerUser(data.email, data.password, data.fullName);
     toast.success("Account created successfully!");
     reset();
-    navigate("/"); // Redirect to the home page after successful register
+    navigate(from); // Redirect to the home page after successful register
   } catch (error) {
     toast.error("Email is already in use.");
   }
@@ -37,7 +41,7 @@ const handleGoogle = async () => {
   try {
     await googleSignIn();
     toast.success("Signed in with Google successfully!");
-    navigate("/"); // Redirect to the home page after successful Google sign-in
+    navigate(from); // Redirect to the home page after successful Google sign-in
   } catch (error) {
     toast.error("Google sign-in failed. Please try again.");
   }
@@ -53,6 +57,19 @@ const handleGoogle = async () => {
           <img src={logo} alt="Logo" className="mx-auto mb-2 w-20 h-20" />
           <h1 className="font-heading text-3xl mb-4 text-maroon tracking-[0.12em]">Create Account</h1>
           <form onSubmit={handleSubmit(onSubmit)} className="text-left">
+
+            <div className="mb-3">
+              <label className="text-md text-maroon">Full Name</label>
+              <input
+                type="text"
+                placeholder="Juan Dela Cruz"
+                {...register("fullName")}
+                className="w-full text-md rounded-xl border border-maroon/20 bg-input px-4 py-2"
+              />
+              {errors.fullName && (
+                <p className="text-sm text-red-700">{errors.fullName.message}</p>
+              )}
+            </div>
 
             <div className="mb-3">
               <label className="text-md text-maroon">Email</label>

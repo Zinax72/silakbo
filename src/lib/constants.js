@@ -42,3 +42,11 @@ export const getDateOptions = () => {
         return { value, label };            
     });
 };
+
+export const isPastShowtime = (date, time) => {
+  const now = new Date()
+  const today = now.toLocaleDateString("en-CA")
+  if (date < today) return true
+  if (date > today) return false
+  return toMinutes(time) < now.getHours() * 60 + now.getMinutes()
+}

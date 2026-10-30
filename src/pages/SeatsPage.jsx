@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useBooking } from '../context/BookingContext'
 import { getTakenSeats } from '../services/CinemaServices'
 import { SEAT_ROWS, SEATS_PER_ROW, getTotal } from '../lib/constants'
-
+import { useAuth } from '../context/AuthContext'
 
 const seatNumbers = Array.from({length: SEATS_PER_ROW}, (_, i) => i + 1);
 
 const SeatsPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { user } = useAuth();
     const { draft, updateDraft } = useBooking();
     const [takenSeats, setTakenSeats] = useState([]); 
     const [selected, setSelected] = useState(draft.seats);
@@ -34,7 +36,8 @@ const SeatsPage = () => {
 
     if (!draft.movieID) return <Navigate to="/NowShowing"/>;
     if (loading) return <p>Loading...</p>
-
+    if (!user) return <Navigate to="/LoginPage" state={{ from: location }} />
+    
     const toggleSeat = (seatId) => {
         if (takenSeats.includes(seatId)) return;
         if (selected.includes(seatId)) {
@@ -47,9 +50,10 @@ const SeatsPage = () => {
     const handleContinue = () => {
         if (selected.length === 0 ) {
             toast.error("Please select at least one seat.");
+            return;
         }
         updateDraft({ seats: selected});
-        navigate("/SummaryPage");
+        navigate(`/movie/${draft.movieID}/summary`)
     }
   return (
     <div>

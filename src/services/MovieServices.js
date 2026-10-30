@@ -22,3 +22,10 @@ export const getMovieById = async (id) => {
   if (!response.ok) throw new Error("Failed to load movie");
   return await response.json();
 }
+
+export const getGenres = async () => {
+  const response = await fetch(`${BASE_URL}/genre/movie/list?api_key=${KEY}`);
+  if (!response.ok) throw new Error("Failed to load genres");
+  const data = await response.json();
+  return data.genres; 
+}

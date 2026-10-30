@@ -1,34 +1,39 @@
-import { Link, useNavigate, Navigate } from 'react-router-dom'
+import { Link, useNavigate, Navigate, useLocation} from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'react-toastify'
 import { loginSchema } from '../schemas/AuthSchemas'
 import { useForm } from 'react-hook-form'
-import { login, googleSignIn } from '../services/AuthServices'
+import { login, googleSignIn, resetPassword } from '../services/AuthServices'
 import { Helmet } from 'react-helmet-async'
 import { useAuth } from '../context/AuthContext'
 import logo from '../assets/Silakbo.svg'
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
-  if (user) return <Navigate to="/" />;
   
   const {
     register,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
   });
 
+  if (user) return <Navigate to="/" />;
+
+  const from = location.state?.from?.pathname || "/";
+  
   const onSubmit = async (data) => {
     try {
       await login(data.email, data.password);
       toast.success("Logged in successfully!");
       reset();
-      navigate("/"); // Redirect to the home page after successful login
+      navigate(from); 
     } catch (error) {
       toast.error("Invalid email or password.");
     }
@@ -38,9 +43,20 @@ const LoginPage = () => {
     try {
       await googleSignIn();
       toast.success("Signed in with Google successfully!");
-      navigate("/"); // Redirect to the home page after successful Google sign-in
+      navigate(from); 
     } catch (error) {
       toast.error("Google sign-in failed. Please try again.");
+    }
+  };
+
+  const handleForgot = async () => {
+    const email = getValues("email");
+    if (!email) return toast.error("Enter your email first.");
+    try {
+      await resetPassword(email);
+      toast.success("Reset link sent. Check your email.");
+    } catch (error) {
+      toast.error("Could not send reset email.");
     }
   };
 
@@ -99,6 +115,12 @@ const LoginPage = () => {
                 onClick={handleGoogle}
                 className="w-full rounded-full bg-maroon py-2 text-cream">Continue With Google</button>
               </form>
+              <button
+              type="button"
+              onClick={handleForgot}
+              className="text-sm text-maroon block mt-4 mx-auto">
+                Forgot password?
+              </button>
               <Link to="/RegisterPage" className="text-sm text-maroon block mt-4">New here? Create an account</Link>
             </div>
         </div>

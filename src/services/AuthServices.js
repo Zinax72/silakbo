@@ -3,12 +3,15 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
+  updateProfile,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 
 import { auth, provider } from "../lib/firebase";
 
-export const register = async (email, password) => {
+export const register = async (email, password, fullName) => {
     const response = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(response.user, { displayName: fullName });
     return response;
 }
 
@@ -26,3 +29,9 @@ export const logout = async () => {
     const response = await signOut(auth);
     return response;
 }
+
+export const resetPassword = async (email) => {
+    const response = await sendPasswordResetEmail(auth, email);
+    return response;
+}
+

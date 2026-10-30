@@ -32,8 +32,14 @@ export const BookingProvider = ({ children }) => {
     resetDraft();
   };
 
+  const clearCinema = () => {
+    setCinema("");
+    localStorage.removeItem("cinema");
+    resetDraft();
+  }
+
   return (
-    <BookingContext.Provider value={{ draft, updateDraft, resetDraft, cinema, chooseCinema }}>
+    <BookingContext.Provider value={{ draft, updateDraft, resetDraft, cinema, chooseCinema, clearCinema }}>
       {children}
     </BookingContext.Provider>
   );

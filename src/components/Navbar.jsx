@@ -3,10 +3,12 @@ import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { logout } from '../services/AuthServices'
 import { toast } from 'react-toastify'
+import { useBooking } from '../context/BookingContext'
 
-const Layout = () => {
+const Navbar = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { clearCinema, cinema } = useBooking();
 
   const handleLogout = async () => {
     try {
@@ -23,6 +25,10 @@ const Layout = () => {
         <NavLink to="/" >Home</NavLink>
         <NavLink to="/NowShowing" >Now Showing</NavLink>
         <NavLink to="/ComingSoon" >Coming Soon</NavLink>
+        
+        {cinema && <button onClick={clearCinema}>Change Branch</button>}
+
+        {user && <NavLink to="/my-tickets">My Tickets</NavLink>}
         {user ? (
           <button
           onClick={handleLogout}
@@ -39,4 +45,4 @@ const Layout = () => {
   )
 }
 
-export default Layout
+export default Navbar
