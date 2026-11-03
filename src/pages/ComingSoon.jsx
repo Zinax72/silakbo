@@ -46,7 +46,6 @@ const ComingSoon = () => {
 
   return (
     <div className="min-h-screen bg-base text-cream px-6 py-10 max-w-7xl mx-auto space-y-8">
-      {/* Top Header Row: Title on left, Search on right */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <h1 className="font-heading text-3xl sm:text-4xl tracking-wide text-cream uppercase">Coming Soon</h1>
         <div className="w-full md:w-80">
@@ -54,7 +53,7 @@ const ComingSoon = () => {
         </div>
       </div>
 
-      {/* Genre Pill Filters */}
+    
       <div className="flex flex-wrap gap-2">
         <button 
           onClick={() => setActiveGenre(null)}
@@ -81,7 +80,7 @@ const ComingSoon = () => {
         ))}
       </div>
 
-      {/* Movie Grid Cards */}
+     
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {loading ? (
           Array.from({ length: 8 }).map((_, i) => <MovieCardSkeleton key={i} />)
