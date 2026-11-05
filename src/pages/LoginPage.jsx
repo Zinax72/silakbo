@@ -61,71 +61,74 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex-1 flex justify-center items-center bg-base bg-radial from-glow/70 to-glow/0">
+    <div className="flex-1 flex justify-center items-center bg-base bg-radial from-glow/70 to-glow/0 min-h-screen px-6">
         <Helmet>
           <title>Sign in - Silakbo</title>  
         </Helmet>    
-            <div className="w-110 bg-cream rounded-3xl px-10 py-8 shadow-2xl shadow-black/60 text-center">
-              <img src={logo} alt="Logo" className="mx-auto mb-2 w-20 h-20" />
-              <h1 className="font-heading text-3xl mb-4 text-maroon tracking-[0.12em]">Sign in</h1>
-              <form onSubmit={handleSubmit(onSubmit)} className="text-left">
-    
-                <div className="mb-3">
-                  <label className="text-md text-maroon">Email</label>
-                  <input
-                    type="email"
-                    placeholder="example@gmail.com"
-                    {...register("email")}
-                    className="w-full text-md rounded-xl border border-maroon/20 bg-input px-4 py-2"
-                    />
-                  {errors.email && (
-                    <p className="text-sm text-red-700">{errors.email.message}</p>
-                  )}
-                </div>
-    
-                <div className="mb-3">
-                  <label className="text-md text-maroon">Password</label>
-                  <input
-                    type="password"
-                    placeholder="********"
-                    {...register("password")}
-                    className="w-full text-md font-sans tracking-widest rounded-xl border border-maroon/20 bg-input px-4 py-2"
-                  />
-                  {errors.password && (
-                    <p className="text-sm text-red-700">{errors.password.message}</p>
-                  )}
-                </div>
-                
-                <button 
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full rounded-full bg-maroon py-2 text-cream disabled:opacity-5"
-                >
-                  {isSubmitting ? "Logging in..." : "Log in"} 
-                </button>
-    
-                <div className="flex items-center gap-3 my-3">
-                  <div className="h-px flex-1 bg-maroon/20" />
-                  <span className="text-sm text-maroon/60">or</span>
-                  <div className="h-px flex-1 bg-maroon/20" />
-                </div>
-    
-                <button 
-                type="button" 
-                onClick={handleGoogle}
-                className="w-full rounded-full bg-maroon py-2 text-cream">Continue With Google</button>
-              </form>
-              <button
+        <div className="w-full max-w-sm bg-cream rounded-3xl px-8 py-10 shadow-2xl shadow-black/60 text-center border border-maroon/10">
+          <img src={logo} alt="Logo" className="mx-auto mb-2 w-16 h-16" />
+          <h1 className="font-heading text-3xl mb-6 text-maroon tracking-[0.12em]">Sign in</h1>
+          <form onSubmit={handleSubmit(onSubmit)} className="text-left space-y-4">
+
+            <div className="space-y-1">
+              <label className="text-xs text-maroon font-medium">Email</label>
+              <input
+                type="email"
+                placeholder="example@gmail.com"
+                {...register("email")}
+                className="w-full text-xs text-neutral-900 bg-white placeholder-neutral-400 rounded-xl border border-maroon/25 px-4 py-2.5 focus:outline-none focus:border-maroon"
+                />
+              {errors.email && (
+                <p className="text-xs text-red-700">{errors.email.message}</p>
+              )}
+            </div>
+
+            <div className="space-y-1">
+              <label className="text-xs text-maroon font-medium">Password</label>
+              <input
+                type="password"
+                placeholder="********"
+                {...register("password")}
+                className="w-full text-xs text-neutral-900 bg-white placeholder-neutral-400 font-sans tracking-widest rounded-xl border border-maroon/25 px-4 py-2.5 focus:outline-none focus:border-maroon"
+              />
+              {errors.password && (
+                <p className="text-xs text-red-700">{errors.password.message}</p>
+              )}
+            </div>
+            
+            <button 
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full rounded-full bg-maroon py-2.5 text-cream text-xs font-semibold disabled:opacity-50 cursor-pointer hover:bg-maroon/90 transition-all shadow-md mt-2"
+            >
+              {isSubmitting ? "Logging in..." : "Log in"} 
+            </button>
+
+            <div className="flex items-center gap-3 my-4">
+              <div className="h-px flex-1 bg-maroon/20" />
+              <span className="text-xs text-maroon/60">or</span>
+              <div className="h-px flex-1 bg-maroon/20" />
+            </div>
+
+            <button 
+              type="button" 
+              onClick={handleGoogle}
+              className="w-full rounded-full bg-maroon py-2.5 text-cream text-xs font-semibold hover:bg-maroon/90 transition-all cursor-pointer shadow-md">
+                Continue with Google
+            </button>
+          </form>
+          <div className="mt-6 space-y-2 text-xs">
+            <button
               type="button"
               onClick={handleForgot}
-              className="text-sm text-maroon block mt-4 mx-auto">
+              className="text-maroon block mx-auto hover:underline cursor-pointer">
                 Forgot password?
-              </button>
-              <Link to="/RegisterPage" className="text-sm text-maroon block mt-4">New here? Create an account</Link>
-            </div>
+            </button>
+            <Link to="/RegisterPage" className="text-maroon block hover:underline">New here? Create an account</Link>
+          </div>
         </div>
-   
+    </div>
   )
 }
 
-export default LoginPage
+export default LoginPage;

@@ -50,37 +50,49 @@ const PaymentPage = () => {
             setPaying(false);
         }
     }
+
     return (
-    <div>
-      <h1>Payment</h1>
+    <div className="min-h-screen bg-base text-cream px-6 py-12 flex flex-col items-center justify-center">
+      <div className="max-w-md w-full bg-cream rounded-3xl p-8 shadow-2xl text-maroon border border-maroon/10">
+        <h1 className="font-heading text-3xl mb-6 text-center tracking-wide">Payment</h1>
 
-      <p>{draft.movieTitle}</p>
-      <p>{draft.cinema} · {draft.date} · {draft.time}</p>
-      <p>Seats: {draft.seats.join(", ")}</p>
-      <p>Tickets: {draft.seats.length}</p>
-      <p>Total: ₱{getTotal(draft.seats.length)}</p>
+        <div className="bg-base/5 p-4 rounded-2xl mb-6 space-y-1 border border-maroon/5 text-sm">
+          <p className="font-heading text-xl">{draft.movieTitle}</p>
+          <p className="text-xs opacity-80">{draft.cinema} · {draft.date} · {draft.time}</p>
+          <p className="text-xs opacity-80">Seats: <span className="font-semibold">{draft.seats.join(", ")}</span></p>
+          <p className="text-base font-bold pt-2">Total: ₱{getTotal(draft.seats.length)}</p>
+        </div>
 
-      <h3>Payment method</h3>
-      {PAYMENT_METHODS.map((m) => (
+        <h3 className="font-heading text-sm mb-3">Payment method</h3>
+        <div className="grid grid-cols-3 gap-2 mb-8">
+          {PAYMENT_METHODS.map((m) => (
+            <button
+              key={m}
+              type="button"
+              disabled={paying}
+              onClick={() => setMethod(m)}
+              className={`py-3 px-2 rounded-2xl text-xs font-semibold transition-all border cursor-pointer ${
+                method === m 
+                  ? 'bg-maroon text-cream border-maroon shadow-md' 
+                  : 'bg-base/5 text-maroon border-maroon/20 hover:bg-base/10'
+              }`}
+            >
+              {m}{m === method ? " ✓" : ""}
+            </button>
+          ))}
+        </div>
+
         <button
-          key={m}
           type="button"
-          disabled={paying}
-          onClick={() => setMethod(m)}
+          onClick={handlePay}
+          disabled={paying || !method}
+          className="w-full py-3 rounded-full bg-maroon text-cream font-medium shadow-md hover:bg-maroon/90 transition-all disabled:opacity-50 cursor-pointer text-sm"
         >
-          {m}{m === method ? " ✓" : ""}
+          {paying ? "Processing..." : `Pay ₱${getTotal(draft.seats.length)}`}
         </button>
-      ))}
-
-      <button
-        type="button"
-        onClick={handlePay}
-        disabled={paying || !method}
-      >
-        {paying ? "Processing..." : `Pay ₱${getTotal(draft.seats.length)}`}
-      </button>
+      </div>
     </div>
   )
 }
 
-export default PaymentPage
+export default PaymentPage;

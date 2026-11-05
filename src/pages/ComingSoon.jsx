@@ -23,7 +23,6 @@ const ComingSoon = () => {
         setLoading(false);
       }
     };
-
     loadMovies();
   }, []);
 
@@ -36,7 +35,6 @@ const ComingSoon = () => {
         toast.error("Could not load genres.");
       }
     };
-
     loadGenres();
   }, []);
 
@@ -47,33 +45,76 @@ const ComingSoon = () => {
   });
 
   return (
-    <div>
-      <h1>Coming Soon</h1>
+    <div className="min-h-screen bg-base text-cream px-6 py-10 max-w-7xl mx-auto space-y-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <h1 className="font-heading text-3xl sm:text-4xl tracking-wide text-cream uppercase">Coming Soon</h1>
+        <div className="w-full md:w-80">
+          <SearchBar value={searchTerm} onChange={setSearchTerm} />
+        </div>
+      </div>
 
-      <SearchBar value={searchTerm} onChange={setSearchTerm} />
-
-      <div>
-        <button onClick={() => setActiveGenre(null)}>All</button>
+    
+      <div className="flex flex-wrap gap-2">
+        <button 
+          onClick={() => setActiveGenre(null)}
+          className={`px-4 py-2 rounded-full text-xs font-medium transition-all border cursor-pointer ${
+            activeGenre === null
+              ? 'bg-cream text-maroon border-cream shadow-md font-semibold'
+              : 'bg-transparent text-cream border-cream/30 hover:bg-cream/10 hover:border-cream/60'
+          }`}
+        >
+          All
+        </button>
         {genres.map((g) => (
-          <button key={g.id} onClick={() => setActiveGenre(g.id)}>{g.name}</button>
+          <button 
+            key={g.id} 
+            onClick={() => setActiveGenre(g.id)}
+            className={`px-4 py-2 rounded-full text-xs font-medium transition-all border cursor-pointer ${
+              activeGenre === g.id
+                ? 'bg-cream text-maroon border-cream shadow-md font-semibold'
+                : 'bg-transparent text-cream border-cream/30 hover:bg-cream/10 hover:border-cream/60'
+            }`}
+          >
+            {g.name}
+          </button>
         ))}
       </div>
 
-      {loading ? (
-        Array.from({ length: 6 }).map((_, i) => <MovieCardSkeleton key={i} />)
-      ) : filtered.length === 0 ? (
-        <p>No movies found.</p>
-      ) : (
-        filtered.map((m) => (
-          <div key={m.id}>
-            <Link to={`/movie/${m.id}`}>
-              <img src={`https://image.tmdb.org/t/p/w500${m.poster_path}`} alt={m.title} />
-              <h2>{m.title}</h2>
-              <p>{m.release_date}</p>
-            </Link>
-          </div>
-        ))
-      )}
+     
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {loading ? (
+          Array.from({ length: 8 }).map((_, i) => <MovieCardSkeleton key={i} />)
+        ) : filtered.length === 0 ? (
+          <p className="col-span-full text-center text-maroon/60 py-20 text-sm">No movies found.</p>
+        ) : (
+          filtered.map((m) => (
+            <div key={m.id} className="bg-cream/10 backdrop-blur-md rounded-2xl overflow-hidden shadow-xl border border-cream/15 hover:scale-[1.02] hover:border-cream/30 transition-all duration-300 flex flex-col">
+              <Link to={`/movie/${m.id}`} className="flex flex-col h-full">
+                <div className="relative aspect-[2/3] bg-base/20 overflow-hidden">
+                  <img 
+                    src={`https://image.tmdb.org/t/p/w500${m.poster_path}`} 
+                    alt={m.title} 
+                    className="w-full h-full object-cover" 
+                  />
+                  <div className="absolute top-3 right-3 bg-maroon text-cream px-2.5 py-1 rounded-lg border border-cream/20 text-[10px] uppercase tracking-wider font-semibold shadow-sm">
+                    Coming Soon
+                  </div>
+                </div>
+                <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
+                  <div>
+                    <h3 className="font-heading text-sm text-cream line-clamp-1">{m.title}</h3>
+                    <p className="text-[11px] text-cream/70 mt-0.5">Releases: {m.release_date}</p>
+                  </div>
+
+                  <span className="w-full text-center py-2 rounded-xl bg-base/20 text-cream font-medium text-xs hover:bg-base/35 transition-all border border-cream/20">
+                    View Details
+                  </span>
+                </div>
+              </Link>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 };
