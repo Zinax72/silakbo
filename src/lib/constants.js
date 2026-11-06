@@ -32,7 +32,7 @@ export const getAvailableShowtimes = (date) => {
 }
 
 export const getDateOptions = () => {
-    return [0, 1, 2].map((offset) => {
+    return [0, 1, 2, 3, 4].map((offset) => {
         const d = new Date(); 
         d.setDate(d.getDate() + offset);
         

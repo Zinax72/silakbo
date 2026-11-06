@@ -71,7 +71,7 @@ const RegisterPage = () => {
                 type="text"
                 placeholder="Juan Dela Cruz"
                 {...register("fullName")}
-                className="w-full text-sm text-neutral-900 bg-white placeholder-neutral-400 rounded-xl border border-maroon/20 px-4 py-2.5 focus:outline-none focus:border-maroon"
+                className="w-full text-sm text-neutral-900 bg-white placeholder-neutral-600 rounded-xl border border-maroon/20 px-4 py-2.5 focus:outline-none focus:border-maroon"
               />
               {errors.fullName && (
                 <p className="text-sm text-red-700 mt-0.5">{errors.fullName.message}</p>
@@ -84,7 +84,7 @@ const RegisterPage = () => {
                 type="email"
                 placeholder="example@gmail.com"
                 {...register("email")}
-                className="w-full text-sm text-neutral-900 bg-white placeholder-neutral-400 rounded-xl border border-maroon/20 px-4 py-2.5 focus:outline-none focus:border-maroon"
+                className="w-full text-sm text-neutral-900 bg-white placeholder-neutral-600 rounded-xl border border-maroon/20 px-4 py-2.5 focus:outline-none focus:border-maroon"
               />
               {errors.email && (
                 <p className="text-sm text-red-700 mt-0.5">{errors.email.message}</p>
@@ -98,13 +98,13 @@ const RegisterPage = () => {
                   type={showPassword ? "text" : "password"}
                   placeholder="********"
                   {...register("password")}
-                  className="w-full text-sm text-neutral-900 bg-white placeholder-neutral-400 font-sans tracking-widest rounded-xl border border-maroon/20 px-4 py-2.5 pr-14 focus:outline-none focus:border-maroon"
+                  className="w-full text-sm text-neutral-900 bg-white placeholder-neutral-600 font-sans tracking-widest rounded-xl border border-maroon/20 px-4 py-2.5 pr-14 focus:outline-none focus:border-maroon"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-maroon/70 hover:text-maroon cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-maroon/70 hover:text-maroon cursor-pointer"
                 >
                   {showPassword ? (
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
@@ -131,13 +131,13 @@ const RegisterPage = () => {
                   type={showConfirm ? "text" : "password"}
                   placeholder="********"
                   {...register("confirmPassword")}
-                  className="w-full text-sm text-neutral-900 bg-white placeholder-neutral-400 font-sans tracking-widest rounded-xl border border-maroon/20 px-4 py-2.5 pr-14 focus:outline-none focus:border-maroon"
+                  className="w-full text-sm text-neutral-900 bg-white placeholder-neutral-600 font-sans tracking-widest rounded-xl border border-maroon/20 px-4 py-2.5 pr-14 focus:outline-none focus:border-maroon"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirm((v) => !v)}
                   aria-label={showConfirm ? "Hide password" : "Show password"}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-maroon/70 hover:text-maroon cursor-pointer"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-maroon/70 hover:text-maroon cursor-pointer"
                 >
                   {showConfirm ? (
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">

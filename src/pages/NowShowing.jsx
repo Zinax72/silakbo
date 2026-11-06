@@ -103,7 +103,7 @@ const NowShowing = () => {
                 </div>
                 <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
                   <div>
-                    <h3 className="font-heading text-lg text-cream line-clamp-1 tracking-wide">{m.title}</h3>
+                    <h2 className="font-heading text-lg text-cream line-clamp-1 tracking-wide">{m.title}</h2>
                     <p className="text-base text-cream/70 mt-1">{m.release_date}</p>
                   </div>
 

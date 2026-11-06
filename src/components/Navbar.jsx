@@ -22,11 +22,8 @@ const Navbar = () => {
   }
 
   return (
-    <div className="flex justify-end items-center gap-20 p-5 bg-linear-to-b from-maroon via-maroon-deep to-nearblack text-cream text-lg">
-        <a href="/" className="absolute left-6 top-4">
-          <img src={logo} alt="Silakbo Cinemas Logo" className="mr-auto h-16 w-auto" />
-        </a>
-        <NavLink to="/" >Home</NavLink>
+    <div className="flex justify-end items-center gap-10 p-5 bg-linear-to-b from-maroon via-maroon-deep to-nearblack text-cream text-lg">
+        <NavLink to="/" className="mr-auto "><img src={logo} alt="Silakbo Cinemas Logo" className="h-16 w-auto" /></NavLink>
         <NavLink to="/NowShowing" >Now Showing</NavLink>
         <NavLink to="/ComingSoon" >Coming Soon</NavLink>
         

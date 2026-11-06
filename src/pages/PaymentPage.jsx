@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext'
 import { addBooking } from '../services/CinemaServices'
 import { getTotal } from '../lib/constants'
 
-const PAYMENT_METHODS = ["GCash", "Card", "Cash at Counter"];
+const PAYMENT_METHODS = ["GCash", "Card"];
 
 const PaymentPage = () => {
     const { draft } = useBooking();
@@ -64,7 +64,7 @@ const PaymentPage = () => {
         </div>
 
         <h3 className="font-heading text-xl mb-3 text-center tracking-[5px]">Payment method</h3>
-        <div className="grid grid-cols-3 gap-2 mb-8">
+        <div className="grid grid-cols-2 gap-2 mb-8">
           {PAYMENT_METHODS.map((m) => (
             <button
               key={m}

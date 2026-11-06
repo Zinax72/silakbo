@@ -1,20 +1,25 @@
 import { useEffect } from "react";
 import { Navigate, Link, useLocation } from "react-router-dom"
 import { useBooking } from "../context/BookingContext";
+import { useAuth } from "../context/AuthContext";
 
 const ConfirmationPage = () => {
   const { state } = useLocation();
   const { resetDraft } = useBooking();
+  const { user } = useAuth();
 
   useEffect(() => {
     resetDraft();
   }, [])
+
+  const guestName = user?.displayName || user?.email || "";
 
   if(!state) return <Navigate to="/NowShowing" />
 
   const handleDownload = () => {
     const lines = [
       "SILAKBO CINEMAS",
+      `Booked by: ${guestName}`,
       `Reference: ${state.ref}`,
       `Movie: ${state.movieTitle}`,
       `Branch: ${state.cinema}`,
@@ -46,6 +51,7 @@ const ConfirmationPage = () => {
           <img src={`https://image.tmdb.org/t/p/w500${state.posterPath}`} alt={state.movieTitle} className="w-20 h-28 object-cover rounded-xl shadow-md flex-shrink-0" />
           <div className="space-y-1 text-sm opacity-80 w-full">
             <h2 className="font-heading text-lg opacity-100">{state.movieTitle}</h2>
+            <p>Booked by: <span className="font-semibold">{guestName}</span></p>
             <p>{state.cinema} · {state.date} · {state.time}</p>
             <p>Seats: <span className="font-semibold">{state.seats.join(", ")}</span></p>
             <p>Paid: <span className="font-semibold">₱{state.totalPrice}</span> ({state.paymentMethod})</p>

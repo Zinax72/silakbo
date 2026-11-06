@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getTakenSeats, updateBooking } from "../services/CinemaServices";
-import { SEAT_ROWS, SEATS_PER_ROW, MAX_SEATS, getTotal } from "../lib/constants";
+import { SEAT_ROWS, SEATS_PER_ROW, getTotal } from "../lib/constants";
 import { useAuth } from "../context/AuthContext";
 
 const seatNumbers = Array.from({ length: SEATS_PER_ROW }, (_, i) => i + 1);
@@ -35,13 +35,15 @@ const EditSeatsPage = () => {
     if (loading) return <div className="flex-1 bg-base flex items-center justify-center text-cream text-sm">Loading seats...</div>;
     if (!user) return <Navigate to="/LoginPage" state={{ from: location }} />;
 
+    const originalCount = booking.seats.length;
+
     const toggleSeat = (seatId) => {
         if (takenSeats.includes(seatId)) return;
         if (selected.includes(seatId)) {
             setSelected(selected.filter((s) => s !== seatId));
         } else {
-            if (selected.length >= MAX_SEATS) {
-                toast.error(`You can select up to ${MAX_SEATS} seats.`);
+            if (selected.length >= originalCount) {
+                toast.error(`You can only have ${originalCount} seat${originalCount > 1 ? "s" : ""} — deselect one first.`);
                 return;
             }
             setSelected([...selected, seatId]);
@@ -49,7 +51,9 @@ const EditSeatsPage = () => {
     };
 
     const handleSave = async () => {
-        if (selected.length === 0) return toast.error("Please select at least one seat.");
+        if (selected.length !== originalCount) {
+            return toast.error(`Please select exactly ${originalCount} seat${originalCount > 1 ? "s" : ""}.`);
+        }
 
         const result = await updateBooking(
             booking.id, booking.movieID, booking.cinema, booking.date, booking.time,
@@ -69,9 +73,9 @@ const EditSeatsPage = () => {
             </div>
 
             {/* Side-by-Side Container */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_18rem] gap-8 items-start">
                 {/* Left Column: Seat Selector Grid */}
-                <div className="lg:col-span-3 bg-cream rounded-3xl p-6 sm:p-10 shadow-2xl text-maroon flex flex-col items-center gap-3 overflow-x-auto border border-maroon/10">
+                <div className="min-w-0 bg-cream rounded-3xl p-6 sm:p-10 shadow-2xl text-maroon flex flex-col items-center gap-3 overflow-x-auto border border-maroon/10">
                     <div className="w-full max-w-2xl bg-maroon/10 h-3 rounded-full mb-8 text-center text-lg uppercase tracking-widest text-maroon/70 font-semibold leading-3">
                         Screen
                     </div>
@@ -103,21 +107,33 @@ const EditSeatsPage = () => {
                             </div>
                         </div>
                     ))}
+
+                    <div className="flex flex-wrap items-center justify-center gap-5 pt-6 text-sm">
+                        <span className="flex items-center gap-2">
+                            <span className="w-5 h-5 rounded-md bg-base/10 border border-maroon/20" /> Available
+                        </span>
+                        <span className="flex items-center gap-2">
+                            <span className="w-5 h-5 rounded-md bg-glow" /> Selected
+                        </span>
+                        <span className="flex items-center gap-2">
+                            <span className="w-5 h-5 rounded-md bg-maroon-deep" /> Taken
+                        </span>
+                    </div>
                 </div>
 
                 {/* Right Column: Selected Seats Summary */}
-                <div className="lg:col-span-1 bg-cream rounded-3xl p-6 text-maroon shadow-2xl border border-maroon/10 space-y-4 top-6">
+                <div className="min-w-0 bg-cream rounded-3xl p-6 text-maroon shadow-2xl border border-maroon/10 space-y-4 sticky top-6">
                     <h2 className="font-heading text-xl border-b border-maroon/10 pb-3">Update Seats</h2>
                     
                     <div className="text-sm space-y-2 text-maroon/80">
                         <div className="flex justify-between items-start">
-                            <span className="opacity-70">Selected Seats:</span>
-                            <span className="font-semibold text-maroon text-right max-w-[160px] break-words">
+                            <span className="opacity-80">Selected Seats:</span>
+                            <span className="font-semibold text-maroon text-right min-w-0 break-words">
                                 {selected.length > 0 ? selected.join(", ") : "None"}
                             </span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="opacity-70">Total Tickets:</span>
+                            <span className="opacity-80">Total Tickets:</span>
                             <span className="font-semibold text-maroon">{selected.length}</span>
                         </div>
                     </div>

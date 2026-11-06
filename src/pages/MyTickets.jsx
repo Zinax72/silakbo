@@ -12,6 +12,7 @@ const MyTickets = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState("upcoming")
+  const [confirmCancel, setConfirmCancel] = useState(null)
 
   useEffect(() => {
     if (!user) return
@@ -32,11 +33,12 @@ const MyTickets = () => {
     navigate(`/movie/${b.movieID}/confirmation`, { state: b })
   }
 
-  const handleCancel = async (b) => {
-    if (!window.confirm(`Cancel booking ${b.ref}? This can't be undone.`)) return
-    const result = await deleteBooking(b.id)
+  const handleCancel = async () => {
+    if (!confirmCancel) return
+    const result = await deleteBooking(confirmCancel.id)
     if (result.success) toast.success(result.message)
     else toast.error(result.message)
+    setConfirmCancel(null)
   }
 
   const tabs = [
@@ -70,9 +72,9 @@ const MyTickets = () => {
         </div>
 
         {loading ? (
-          <p className="text-cream/50 py-16 text-center text-sm">Loading tickets...</p>
+          <p className="text-cream/70 py-16 text-center text-sm">Loading tickets...</p>
         ) : shown.length === 0 ? (
-          <p className="text-cream/50 py-16 text-center text-sm">No {tab} tickets found.</p>
+          <p className="text-cream/70 py-16 text-center text-sm">No {tab} tickets found.</p>
         ) : (
           <div className="grid gap-6">
             {shown.map((b) => (
@@ -99,7 +101,7 @@ const MyTickets = () => {
                       <span className="text-cream/60">Seats: </span>
                       <span className="font-semibold">{b.seats.join(", ")}</span>
                     </p>
-                    <p className="text-xs text-cream/40 uppercase tracking-widest pt-1">Ref: {b.ref}</p>
+                    <p className="text-xs text-cream/60 uppercase tracking-widest pt-1">Ref: {b.ref}</p>
                   </div>
                 </div>
 
@@ -119,7 +121,7 @@ const MyTickets = () => {
                         Change seats
                       </button>
                       <button
-                        onClick={() => handleCancel(b)}
+                        onClick={() => setConfirmCancel(b)}
                         className="flex-1 sm:flex-none px-4 py-2 rounded-full bg-red-500/10 text-red-300 text-sm font-medium hover:bg-red-500/20 transition-all border border-red-500/20 cursor-pointer"
                       >
                         Cancel
@@ -132,6 +134,32 @@ const MyTickets = () => {
           </div>
         )}
       </div>
+
+      {confirmCancel && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6">
+          <div className="w-full max-w-sm bg-cream rounded-3xl p-6 text-maroon shadow-2xl border border-maroon/10 space-y-4 text-center">
+            <h3 className="font-heading text-xl tracking-wide">Cancel booking?</h3>
+            <p className="text-sm text-maroon/70">
+              Are you sure you want to cancel{" "}
+              <span className="font-semibold">{confirmCancel.ref}</span>? This can't be undone.
+            </p>
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => setConfirmCancel(null)}
+                className="flex-1 py-2.5 rounded-full bg-maroon/10 text-maroon text-sm font-medium hover:bg-maroon/20 transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCancel}
+                className="flex-1 py-2.5 rounded-full bg-maroon text-cream text-sm font-medium hover:bg-maroon/90 transition-all cursor-pointer"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

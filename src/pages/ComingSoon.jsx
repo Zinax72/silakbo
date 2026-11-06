@@ -90,7 +90,7 @@ const ComingSoon = () => {
         ) : (
           filtered.map((m) => (
             <div key={m.id} className="bg-cream/10 backdrop-blur-md rounded-2xl overflow-hidden shadow-xl border border-cream/15 hover:scale-[1.02] hover:border-cream/30 transition-all duration-300 flex flex-col">
-              <Link to={`/movie/${m.id}`} className="flex flex-col h-full">
+              <Link to={`/comingsoon/${m.id}`} className="flex flex-col h-full">
                 <div className="relative aspect-[2/3] bg-base/20 overflow-hidden">
                   <img 
                     src={`https://image.tmdb.org/t/p/w500${m.poster_path}`} 
@@ -103,7 +103,7 @@ const ComingSoon = () => {
                 </div>
                 <div className="p-4 flex flex-col flex-grow justify-between space-y-3">
                   <div>
-                    <h3 className="font-heading text-lg text-cream line-clamp-1 tracking-wide">{m.title}</h3>
+                    <h2 className="font-heading text-lg text-cream line-clamp-1 tracking-wide">{m.title}</h2>
                     <p className="text-base text-cream/70 mt-1">Releases: {m.release_date}</p>
                   </div>
 

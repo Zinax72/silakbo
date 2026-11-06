@@ -53,7 +53,7 @@ const ForgotPasswordPage = () => {
               type="email"
               placeholder="example@gmail.com"
               {...register("email")}
-              className="w-full text-sm text-neutral-900 bg-white placeholder-neutral-400 rounded-xl border border-maroon/25 px-4 py-2.5 focus:outline-none focus:border-maroon"
+              className="w-full text-sm text-neutral-900 bg-white placeholder-neutral-600 rounded-xl border border-maroon/25 px-4 py-2.5 focus:outline-none focus:border-maroon"
             />
             {errors.email && (
               <p className="text-sm text-red-700">{errors.email.message}</p>

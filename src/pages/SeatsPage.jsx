@@ -68,9 +68,9 @@ const SeatsPage = () => {
             </div>
 
            
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_18rem] gap-8 items-start">
                 
-                <div className="lg:col-span-3 bg-cream rounded-3xl p-6 sm:p-10 shadow-2xl text-maroon flex flex-col items-center gap-3 overflow-x-auto border border-maroon/10">
+                <div className="min-w-0 bg-cream rounded-3xl p-6 sm:p-10 shadow-2xl text-maroon flex flex-col items-center gap-3 overflow-x-auto border border-maroon/10">
                     <div className="w-full max-w-2xl bg-maroon/10 h-3 rounded-full mb-8 text-center text-lg uppercase tracking-widest text-maroon/70 font-semibold leading-3">
                         Screen
                     </div>
@@ -102,21 +102,33 @@ const SeatsPage = () => {
                             </div>
                         </div>
                     ))}
+
+                    <div className="flex flex-wrap items-center justify-center gap-5 pt-6 text-sm">
+                        <span className="flex items-center gap-2">
+                            <span className="w-5 h-5 rounded-md bg-base/10 border border-maroon/20" /> Available
+                        </span>
+                        <span className="flex items-center gap-2">
+                            <span className="w-5 h-5 rounded-md bg-glow" /> Selected
+                        </span>
+                        <span className="flex items-center gap-2">
+                            <span className="w-5 h-5 rounded-md bg-maroon-deep" /> Taken
+                        </span>
+                    </div>
                 </div>
 
                
-                <div className="lg:col-span-1 bg-cream rounded-3xl p-6 text-maroon shadow-2xl border border-maroon/10 space-y-4 sticky top-6">
+                <div className="min-w-0 bg-cream rounded-3xl p-6 text-maroon shadow-2xl border border-maroon/10 space-y-4 sticky top-6">
                     <h2 className="font-heading text-xl border-b border-maroon/10 pb-3">Selection Summary</h2>
                     
                     <div className="text-sm space-y-2 text-maroon/80">
                         <div className="flex justify-between items-start">
-                            <span className="opacity-70">Selected Seats:</span>
-                            <span className="font-semibold text-maroon text-right max-w-[160px] break-words">
+                            <span className="opacity-80">Selected Seats:</span>
+                            <span className="font-semibold text-maroon text-right min-w-0 break-words">
                                 {selected.length > 0 ? selected.join(", ") : "None"}
                             </span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="opacity-70">Total Tickets:</span>
+                            <span className="opacity-80">Total Tickets:</span>
                             <span className="font-semibold text-maroon">{selected.length}</span>
                         </div>
                     </div>

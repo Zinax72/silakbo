@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
+import ComingSoonMoviePage from './pages/ComingSoonMoviePage'
 import Layout from "./layout/Layout";
 import MoviePage from './pages/MoviePage'
 import SeatsPage from './pages/SeatsPage'
@@ -38,6 +39,7 @@ function App() {
             <Route path="/ForgotPassword" element={<ForgotPasswordPage />} />
             <Route path="/ResetPassword" element={<ResetPasswordPage />} />
 
+            <Route path="/comingsoon/:id" element={<ComingSoonMoviePage />} />
             <Route path="/movie/:id" element={<MoviePage />} />
             <Route path="/movie/:id/seats" element={<SeatsPage />} />
             <Route path="/movie/:id/summary" element={<SummaryPage />} />
