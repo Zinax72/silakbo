@@ -52,18 +52,18 @@ const PaymentPage = () => {
     }
 
     return (
-    <div className="min-h-screen bg-base text-cream px-6 py-12 flex flex-col items-center justify-center">
+    <div className="flex-1 bg-base text-cream px-6 py-12 flex flex-col items-center justify-center">
       <div className="max-w-md w-full bg-cream rounded-3xl p-8 shadow-2xl text-maroon border border-maroon/10">
         <h1 className="font-heading text-3xl mb-6 text-center tracking-wide">Payment</h1>
 
         <div className="bg-base/5 p-4 rounded-2xl mb-6 space-y-1 border border-maroon/5 text-sm">
-          <p className="font-heading text-xl">{draft.movieTitle}</p>
-          <p className="text-xs opacity-80">{draft.cinema} · {draft.date} · {draft.time}</p>
-          <p className="text-xs opacity-80">Seats: <span className="font-semibold">{draft.seats.join(", ")}</span></p>
-          <p className="text-base font-bold pt-2">Total: ₱{getTotal(draft.seats.length)}</p>
+          <p className="font-heading text-xl tracking-[5px]">{draft.movieTitle}</p>
+          <p className="text-md opacity-80">{draft.cinema} · {draft.date} · {draft.time}</p>
+          <p className="text-md opacity-80">Seats: <span className="font-semibold text-md">{draft.seats.join(", ")}</span></p>
+          <p className="text-base font-bold text-lg">Total: ₱{getTotal(draft.seats.length)}</p>
         </div>
 
-        <h3 className="font-heading text-sm mb-3">Payment method</h3>
+        <h3 className="font-heading text-xl mb-3 text-center tracking-[5px]">Payment method</h3>
         <div className="grid grid-cols-3 gap-2 mb-8">
           {PAYMENT_METHODS.map((m) => (
             <button
@@ -71,13 +71,13 @@ const PaymentPage = () => {
               type="button"
               disabled={paying}
               onClick={() => setMethod(m)}
-              className={`py-3 px-2 rounded-2xl text-xs font-semibold transition-all border cursor-pointer ${
+              className={`py-3 px-2 rounded-2xl text-sm font-semibold transition-all border cursor-pointer ${
                 method === m 
                   ? 'bg-maroon text-cream border-maroon shadow-md' 
                   : 'bg-base/5 text-maroon border-maroon/20 hover:bg-base/10'
               }`}
             >
-              {m}{m === method ? " ✓" : ""}
+              {m}{m === method ? "" : ""}
             </button>
           ))}
         </div>
@@ -88,7 +88,7 @@ const PaymentPage = () => {
           disabled={paying || !method}
           className="w-full py-3 rounded-full bg-maroon text-cream font-medium shadow-md hover:bg-maroon/90 transition-all disabled:opacity-50 cursor-pointer text-sm"
         >
-          {paying ? "Processing..." : `Pay ₱${getTotal(draft.seats.length)}`}
+          {paying ? "Processing..." : `Confirm`}
         </button>
       </div>
     </div>

@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { getDateOptions, getAvailableShowtimes } from "../lib/constants";
+import { getDateOptions, getAvailableShowtimes, CINEMAS } from "../lib/constants";
 import { getMovieById } from "../services/MovieServices";
 import { useBooking } from "../context/BookingContext";
 
 const MoviePage = () => {
-    const { updateDraft, cinema } = useBooking();
+    const { updateDraft, cinema, chooseCinema } = useBooking();
     const { id } = useParams();
     const navigate = useNavigate();
     const dateOptions = useMemo(() => getDateOptions(), []);
@@ -30,7 +30,7 @@ const MoviePage = () => {
         loadMovie();
     }, [id]);
 
-    if (loading) return <div className="min-h-screen bg-base flex items-center justify-center text-cream/60 text-sm">Loading...</div>;
+    if (loading) return <div className="flex-1 bg-base flex items-center justify-center text-cream/60 text-sm">Loading...</div>;
     if (!movie) return null;
 
     const director = movie.credits.crew.find((p) => p.job === "Director")?.name;
@@ -43,7 +43,9 @@ const MoviePage = () => {
 
     
     const todayStr = new Date().toISOString().split("T")[0];
-    const isComingSoon = movie.release_date && movie.release_date > todayStr;
+    const isComingSoon =
+        (movie.status && movie.status !== "Released") ||
+        (movie.release_date && movie.release_date > todayStr);
 
     const details = [
         ["Director", director],
@@ -67,7 +69,7 @@ const MoviePage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-base text-cream">
+        <div className="flex-1 bg-base text-cream">
             <div className="max-w-5xl mx-auto px-6 py-16 md:py-24 space-y-20">
 
                
@@ -126,8 +128,24 @@ const MoviePage = () => {
                         <div className="w-full p-8 rounded-2xl bg-maroon/20 border border-maroon/30 flex flex-col items-center justify-center text-center space-y-3 mx-auto">
                             <h3 className="font-heading text-2xl text-cream tracking-wide">Coming Soon</h3>
                             <p className="text-sm text-cream/70 max-w-md">
-                                This movie has not been released yet. Showtimes and ticket bookings will be available once it hits theaters.
+                                This movie has not been released yet. Estimated release date:{" "}
+                                <span className="text-cream font-semibold">{movie.release_date || "To be announced"}</span>
                             </p>
+                        </div>
+                    ) : !cinema ? (
+                        <div className="space-y-5">
+                            <h2 className="font-heading text-2xl tracking-wide">Choose a branch</h2>
+                            <div className="flex flex-wrap gap-3">
+                                {CINEMAS.map((c) => (
+                                    <button
+                                        key={c}
+                                        onClick={() => chooseCinema(c)}
+                                        className="px-6 py-2.5 rounded-sm border border-cream/30 text-sm transition-colors hover:bg-maroon hover:border-maroon cursor-pointer"
+                                    >
+                                        {c}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     ) : (
                         <>

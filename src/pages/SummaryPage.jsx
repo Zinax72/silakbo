@@ -18,7 +18,7 @@ const SummaryPage = () => {
   const total = getTotal(tickets);
 
   return (
-    <div className="min-h-screen bg-base text-cream px-6 py-12 flex flex-col items-center justify-center">
+    <div className="flex-1 bg-base text-cream px-6 py-12 flex flex-col items-center justify-center">
       <div className="max-w-md w-full bg-cream rounded-3xl p-8 shadow-2xl text-maroon border border-maroon/10">
         <h1 className="font-heading text-3xl mb-6 text-center tracking-wide">Order Summary</h1>
 
@@ -26,8 +26,8 @@ const SummaryPage = () => {
           <img src={`https://image.tmdb.org/t/p/w500${draft.posterPath}`} alt={draft.movieTitle} className="w-20 h-28 object-cover rounded-xl shadow-md" />
           <div className="space-y-1">
             <h2 className="font-heading text-xl">{draft.movieTitle}</h2>
-            <p className="text-xs opacity-80">{draft.cinema} · {draft.date} · {draft.time}</p>
-            <p className="text-xs opacity-80">Seats: <span className="font-semibold">{draft.seats.join(", ")}</span></p>
+            <p className="text-sm opacity-80">{draft.cinema} · {draft.date} · {draft.time}</p>
+            <p className="text-sm opacity-80">Seats: <span className="font-semibold">{draft.seats.join(", ")}</span></p>
           </div>
         </div>
 

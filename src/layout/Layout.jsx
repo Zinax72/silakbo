@@ -1,18 +1,16 @@
 import Navbar from "../components/Navbar"
 import { Outlet } from "react-router-dom"
 import { ToastContainer } from "react-toastify";
-import { useBooking } from "../context/BookingContext";
-import BranchPage from "../pages/BranchPage";
 import Footer from "../components/Footer";
 import "react-toastify/dist/ReactToastify.css";
 
 const Layout = () => {
-  const {cinema} = useBooking();
-
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      {cinema ? <Outlet /> : <BranchPage />}
+      <main className="flex-1 flex flex-col">
+        <Outlet />
+      </main>
       <Footer />
       <ToastContainer
       autoClose={200}

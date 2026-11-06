@@ -45,7 +45,7 @@ const MyTickets = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-base text-cream">
+    <div className="flex-1 bg-base text-cream">
       <div className="max-w-4xl mx-auto px-6 py-16 md:py-24 space-y-10">
         <div className="text-center space-y-2">
           <h1 className="font-heading text-4xl md:text-5xl tracking-wide">My Tickets</h1>
@@ -58,7 +58,7 @@ const MyTickets = () => {
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
-              className={`px-6 py-2 rounded-full text-xs font-medium transition-all cursor-pointer border ${
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all cursor-pointer border ${
                 tab === t.key
                   ? "bg-cream text-maroon border-cream shadow-md font-semibold"
                   : "bg-transparent text-cream border-cream/30 hover:bg-cream/10 hover:border-cream/60"
@@ -86,7 +86,7 @@ const MyTickets = () => {
                     alt={b.movieTitle}
                     className="w-20 h-28 object-cover rounded-xl shadow-md flex-shrink-0"
                   />
-                  <div className="space-y-1.5 text-xs">
+                  <div className="space-y-1.5 text-sm">
                     <h2 className="font-heading text-lg tracking-wide text-cream">{b.movieTitle}</h2>
                     <p className="flex flex-wrap justify-center sm:justify-start gap-x-3 text-cream/70">
                       <span>{b.cinema}</span>
@@ -99,14 +99,14 @@ const MyTickets = () => {
                       <span className="text-cream/60">Seats: </span>
                       <span className="font-semibold">{b.seats.join(", ")}</span>
                     </p>
-                    <p className="text-[10px] text-cream/40 uppercase tracking-widest pt-1">Ref: {b.ref}</p>
+                    <p className="text-xs text-cream/40 uppercase tracking-widest pt-1">Ref: {b.ref}</p>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap sm:flex-col gap-2.5 w-full sm:w-auto justify-center">
                   <button
                     onClick={() => handleView(b)}
-                    className="px-5 py-2.5 rounded-full bg-maroon text-cream text-xs font-medium shadow-md hover:bg-maroon/90 transition-all cursor-pointer"
+                    className="px-5 py-2.5 rounded-full bg-maroon text-cream text-sm font-medium shadow-md hover:bg-maroon/90 transition-all cursor-pointer"
                   >
                     View ticket
                   </button>
@@ -114,13 +114,13 @@ const MyTickets = () => {
                     <div className="flex gap-2 w-full sm:w-auto justify-center">
                       <button
                         onClick={() => navigate("/my-tickets/edit", { state: b })}
-                        className="flex-1 sm:flex-none px-4 py-2 rounded-full bg-cream/10 text-cream text-xs font-medium hover:bg-cream/20 transition-all border border-cream/20 cursor-pointer"
+                        className="flex-1 sm:flex-none px-4 py-2 rounded-full bg-cream/10 text-cream text-sm font-medium hover:bg-cream/20 transition-all border border-cream/20 cursor-pointer"
                       >
                         Change seats
                       </button>
                       <button
                         onClick={() => handleCancel(b)}
-                        className="flex-1 sm:flex-none px-4 py-2 rounded-full bg-red-500/10 text-red-300 text-xs font-medium hover:bg-red-500/20 transition-all border border-red-500/20 cursor-pointer"
+                        className="flex-1 sm:flex-none px-4 py-2 rounded-full bg-red-500/10 text-red-300 text-sm font-medium hover:bg-red-500/20 transition-all border border-red-500/20 cursor-pointer"
                       >
                         Cancel
                       </button>

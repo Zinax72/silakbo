@@ -5,6 +5,8 @@ import {
   signOut,
   updateProfile,
   sendPasswordResetEmail,
+  confirmPasswordReset,
+  verifyPasswordResetCode,
 } from "firebase/auth";
 
 import { auth, provider } from "../lib/firebase";
@@ -31,7 +33,20 @@ export const logout = async () => {
 }
 
 export const resetPassword = async (email) => {
-    const response = await sendPasswordResetEmail(auth, email);
+    const actionCodeSettings = {
+        url: `${window.location.origin}/ResetPassword`,
+        handleCodeInApp: true,
+    };
+    const response = await sendPasswordResetEmail(auth, email, actionCodeSettings);
+    return response;
+}
+
+export const verifyResetCode = async (oobCode) => {
+    return await verifyPasswordResetCode(auth, oobCode);
+}
+
+export const confirmReset = async (oobCode, newPassword) => {
+    const response = await confirmPasswordReset(auth, oobCode, newPassword);
     return response;
 }
 

@@ -4,6 +4,7 @@ export const TICKET_PRICE = 500;
 export const BOOKING_FEE = 50;
 export const SEAT_ROWS = [ "A", "B", "C", "D", "E", "F", "G", "H" ];
 export const SEATS_PER_ROW = 12
+export const MAX_SEATS = 10
 
 export const getTotal = (seatCount) => {
     return seatCount * (TICKET_PRICE + BOOKING_FEE)
@@ -49,4 +50,9 @@ export const isPastShowtime = (date, time) => {
   if (date < today) return true
   if (date > today) return false
   return toMinutes(time) < now.getHours() * 60 + now.getMinutes()
+}
+
+export const isReleased = (releaseDate) => {
+  if (!releaseDate) return false
+  return releaseDate <= new Date().toLocaleDateString("en-CA")
 }

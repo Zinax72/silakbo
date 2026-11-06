@@ -4,6 +4,8 @@ import NowShowing from './pages/NowShowing'
 import ComingSoon from './pages/ComingSoon'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 import Layout from "./layout/Layout";
 import MoviePage from './pages/MoviePage'
 import SeatsPage from './pages/SeatsPage'
@@ -13,18 +15,28 @@ import ConfirmationPage from './pages/ConfirmationPage'
 import MyTickets from './pages/MyTickets'
 import EditSeatsPage from "./pages/EditSeatsPage"
 import NotFound from './pages/NotFound'
+import BranchPage from './pages/BranchPage'
+import { useBooking } from './context/BookingContext'
 
+
+const HomeRoute = () => {
+  const { cinema } = useBooking();
+  return cinema ? <HomePage /> : <BranchPage />;
+};
 
 function App() {
   return (
     <>
       <Routes>
           <Route element={<Layout />}>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<HomeRoute />} />
+            <Route path="/Branch" element={<BranchPage />} />
             <Route path="/NowShowing" element={<NowShowing />} />
             <Route path="/ComingSoon" element={<ComingSoon />} />
             <Route path="/LoginPage" element={<LoginPage />} />
             <Route path="/RegisterPage" element={<RegisterPage />} />
+            <Route path="/ForgotPassword" element={<ForgotPasswordPage />} />
+            <Route path="/ResetPassword" element={<ResetPasswordPage />} />
 
             <Route path="/movie/:id" element={<MoviePage />} />
             <Route path="/movie/:id/seats" element={<SeatsPage />} />
